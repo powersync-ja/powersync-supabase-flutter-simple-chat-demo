@@ -36,13 +36,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     final myUserId = supabase.auth.currentUser!.id;
-    _messagesStream = supabase
-        .from('messages')
-        .stream(primaryKey: ['id'])
-        .order('created_at')
-        .map((maps) => maps
-            .map((map) => Message.fromMap(map: map, myUserId: myUserId))
-            .toList());
+    _messagesStream = Message.watchMessages(myUserId);
     super.initState();
   }
 
@@ -50,9 +44,7 @@ class _ChatPageState extends State<ChatPage> {
     if (_profileCache[profileId] != null) {
       return;
     }
-    final data =
-        await supabase.from('profiles').select().eq('id', profileId).single();
-    final profile = Profile.fromMap(data);
+    final profile = await Profile.findProfileById(profileId);
     setState(() {
       _profileCache[profileId] = profile;
     });
@@ -199,16 +191,7 @@ class _MessageBarState extends State<_MessageBar> {
       return;
     }
     _textController.clear();
-    try {
-      await supabase.from('messages').insert({
-        'profile_id': myUserId,
-        'content': text,
-      });
-    } on PostgrestException catch (error) {
-      context.showErrorSnackBar(message: error.message);
-    } catch (_) {
-      context.showErrorSnackBar(message: unexpectedErrorMessage);
-    }
+    await Message.create(myUserId, text);
   }
 }
 

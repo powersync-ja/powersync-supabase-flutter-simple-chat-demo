@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
 import './utils/constants.dart';
 import './pages/splash_page.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import './powersync.dart';
+import 'package:logging/logging.dart';
+
+final log = Logger('powersync-supabase');
 
 Future<void> main() async {
+  Logger.root.level = Level.INFO;
+  Logger.root.onRecord.listen((record) {
+    print(
+        '[${record.loggerName}] ${record.level.name}: ${record.time}: ${record.message}');
+
+    if (record.error != null) {
+      print(record.error);
+    }
+    if (record.stackTrace != null) {
+      print(record.stackTrace);
+    }
+  });
+
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: '.env');
+  await openDatabase();
 
-  await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-  );
+  //Some example code showing printf() style debugging
+  final testResults = await db.getAll('SELECT * from messages');
+  log.info('testResults = $testResults');
+
   runApp(const MyApp());
 }
 

@@ -39,6 +39,8 @@ dependencies:
   supabase_flutter: ^1.10.18
   timeago: ^3.1.0
   flutter_dotenv: ^5.1.0
+  powersync: ^0.4.0
+  logging: ^1.2.0
 
 
 dev_dependencies:
