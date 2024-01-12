@@ -1,10 +1,6 @@
-# powersync-supabase-flutter-chat-demo
-Based on the Supabase Flutter tutorial to build a simple chat app: https://supabase.com/blog/flutter-tutorial-building-a-chat-app
 
-# Instructions:
+# This Demo App Has Been Moved
 
-1. `git clone`
-2. `cd` into folder
-3. `cp .env.template .env`
-4. edit `.env`
-5. `flutter run`
+This demo app has been moved to the following location in the `powersync.dart` (PowerSync Flutter SDK) monorepo:
+
+[`demos/supabase-simple-chat`](https://github.com/powersync-ja/powersync.dart/tree/master/demos/supabase-simple-chat)
